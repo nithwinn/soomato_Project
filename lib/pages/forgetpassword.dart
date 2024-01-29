@@ -1,4 +1,6 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:soomato/pages/signup.dart';
 
 class forgetpassword extends StatefulWidget {
   const forgetpassword({super.key});
@@ -10,6 +12,29 @@ class forgetpassword extends StatefulWidget {
 class _forgetpasswordState extends State<forgetpassword> {
 
   TextEditingController mailcontroller=new TextEditingController();
+
+String email="";
+
+final _formkey=GlobalKey<FormState>();
+
+resetPassword()async{
+  try{
+    await FirebaseAuth.instance.sendPasswordResetEmail(email: email);
+    ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(
+          "Password Reset Email has been sent !",
+          style: TextStyle(fontSize: 18.0),
+        )));
+  }on FirebaseAuthException catch(e){
+    if(e.code=="user not found"){
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(
+        "No user found for that email.",
+        style: TextStyle(
+            fontSize: 18.0),)));
+    }
+  }
+}
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -37,7 +62,11 @@ class _forgetpasswordState extends State<forgetpassword> {
                 fontSize: 20.0,
                 fontWeight: FontWeight.bold,
               ),),
-            Expanded(child: Form(child: Padding(padding: EdgeInsets.only(left: 10.0),
+            Expanded(
+                child: Form(
+                  key: _formkey,
+                    child: Padding(
+                      padding: EdgeInsets.only(left: 10.0),
               child: ListView(
                 children: [
                   Container(
@@ -69,32 +98,53 @@ class _forgetpasswordState extends State<forgetpassword> {
                     ),
                   ),
                   SizedBox(height: 40.0,),
-                  Container(
-                    margin:EdgeInsets.only(left: 60.0,),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Container(
-                          width: 140,
-                          padding: EdgeInsets.all(10),
-                          decoration: BoxDecoration(
-                              color: Colors.black,
-                              borderRadius: BorderRadius.circular(10)
-                          ),
-                          child: Center(
-                            child: Text("Send Email",style: TextStyle(
+                        GestureDetector(
+                          onTap: (){
+                            if(_formkey.currentState!.validate()){
+                             setState(() {
+                               email=mailcontroller.text;
+                             });
+                             resetPassword();
+                            }
+                          },
+                          child: Container(
+                            width: 140,
+                            padding: EdgeInsets.all(10),
+                            decoration: BoxDecoration(
                                 color: Colors.white,
-                                fontSize: 18,
-                                fontWeight: FontWeight.bold
-                            ),),
+                                borderRadius: BorderRadius.circular(10)
+                            ),
+                            child: Center(
+                              child: Text("Send Email",style: TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.bold
+                              ),),
+                            ),
                           ),
-                        )
+                        ),
+                  SizedBox(height: 50.0,),
+                  Row(
+                    mainAxisAlignment:MainAxisAlignment.center,
+                    children:[
+                      Text("Dont have an account?",style: TextStyle(fontSize: 18.0,color: Colors.white),),
+                      GestureDetector(
+                        onTap: (){
+                          Navigator.push(context, MaterialPageRoute(builder: (context)=>SignUp()));
+                        },
+                        child: Text("Create",style: TextStyle(
+                            color: Color.fromARGB(225,184,166,6),
+                            fontSize: 18.0,fontWeight:FontWeight.w500
+                        ),),
+                      )
+                    ],
+                  ),
                       ],
                     ),
                   )
-                ],
-              ),
-            )))
+
+            )),
+
           ],
         ),
       ),
