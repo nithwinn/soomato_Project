@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "532486167893",
+    "project_id": "soomaatoo-20b64",
+    "storage_bucket": "soomaatoo-20b64.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:532486167893:android:819ef36e84ba343156e3dc",
+        "android_client_info": {
+          "package_name": "com.example.soomato"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCJ3wsFydjL5e-xh3HNgFIloCZK9jda7Jg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

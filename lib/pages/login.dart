@@ -1,8 +1,13 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:soomato/pages.dart';
+import 'package:soomato/pages/details.dart';
+import 'package:soomato/pages/profile.dart';
 import 'package:soomato/pages/signup.dart';
 import 'package:soomato/widgets/widget_support.dart';
 
 import 'bottomnav.dart';
+import 'forgetpassword.dart';
 
 class LogIn extends StatefulWidget {
   const LogIn({super.key});
@@ -12,6 +17,33 @@ class LogIn extends StatefulWidget {
 }
 
 class _LogInState extends State<LogIn> {
+  String email="",password="";
+
+  final _formkey=GlobalKey<FormState>();
+
+  TextEditingController useremailcontroller= new TextEditingController();
+  TextEditingController userpasswordcontroller= new TextEditingController();
+
+  userLogin()async{
+  try{
+    await FirebaseAuth.instance.signInWithEmailAndPassword(email: email, password: password);
+  }on FirebaseAuthException catch(e){
+    if(e.code=="user not found"){
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text("No user found for that email",
+        style: TextStyle(fontSize: 18.0,color: Colors.black),
+      )));
+    }else if(e.code=='Wrong Password'){
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text("Wrong password Provided by user",
+        style: TextStyle(fontSize: 18.0,color: Colors.black),
+      )));
+    }
+  }
+  }
+
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -26,8 +58,8 @@ class _LogInState extends State<LogIn> {
                       begin: Alignment.topLeft,
                       end: Alignment.bottomRight,
                       colors: [
-                    Color(0xffec4824),
-                    Color(0xFFe74b1a),
+                    Colors.redAccent,
+                    Colors.redAccent,
                   ])),
             ),
             Container(
@@ -43,17 +75,17 @@ class _LogInState extends State<LogIn> {
               child: Text(""),
             ),
             Container(
-              margin: EdgeInsets.only(top: 40.0, left: 20.0, right: 20.0),
+              margin: EdgeInsets.only(top: 40.0,left: 32.0,right: 20.0),
               child: Column(
                 children: [
-                  Center(
-                      child: Image.asset(
-                    "assets/images/logo.png",
-                    width: MediaQuery.of(context).size.width / 2.8,
-                    fit: BoxFit.cover,
-                  )),
+                  // Center(
+                  //     child: Image.asset(
+                  //   "assets/images/logo.png",
+                  //   width: MediaQuery.of(context).size.width / 2.8,
+                  //   fit: BoxFit.cover,
+                  // )),
                   SizedBox(
-                    height: 50.0,
+                    height: 120.0,
                   ),
                   Material(
                     elevation: 5.0,
@@ -65,106 +97,146 @@ class _LogInState extends State<LogIn> {
                       decoration: BoxDecoration(
                           color: Colors.white,
                           borderRadius: BorderRadius.circular(10)),
-                      child: Column(
-                        children: [
-                          SizedBox(
-                            height: 30.0,
-                          ),
-                          Text(
-                            "LogIn",
-                            style: AppWidget.boldTextFeildStyle(),
-                          ),
-                          TextField(
-                            decoration: InputDecoration(
-                                hintText: "Email",
-                                hintStyle: AppWidget.BoldTextFeildStyle(),
-                                prefixIcon: Icon(Icons.email_outlined)),
-                          ),
-                          SizedBox(
-                            height: 30.0,
-                          ),
-                          TextField(
-                            obscureText: true,
-                            decoration: InputDecoration(
-                                hintText: "Password",
-                                hintStyle: AppWidget.BoldTextFeildStyle(),
-                                prefixIcon: Icon(Icons.password_outlined)),
-                          ),
-                          SizedBox(
-                            height: 10.0,
-                          ),
-                          Container(
-                              alignment: Alignment.topRight,
-                              child: Text(
-                                "Forget Password?",
-                                style: AppWidget.FeildStyle(),
-                              )),
-                          SizedBox(
-                            height: 60.0,
-                          ),
-                          // Material(
-                          //   elevation: 5.0,
-                          //     borderRadius: BorderRadius.circular(20.0),
-                          //   child: Container(
-                          //     padding: EdgeInsets.symmetric(vertical: 8.0),
-                          //     width: 200,
-                          //     decoration: BoxDecoration(color: Color(0xFFe74b1a),borderRadius: BorderRadius.circular(20.0)),
-                          //     child: Center(
-                          //         child: Text("LOGIN",style: TextStyle(color: Colors.white,fontSize: 18.0,fontFamily: 'Poppins1',fontWeight: FontWeight.bold),)),
-                          //   ),
-                          // ),
-                          Container(
-                            width: 200,
-                            height: 50,
-                            child: ElevatedButton(
-                                style: ButtonStyle(
-                                  backgroundColor: MaterialStatePropertyAll(
-                                    Colors.orange,
-                                  ),
-                                ),
-                                onPressed: () {
-                                  Navigator.of(context).push(MaterialPageRoute(
-                                    builder: (context) => BottomNav(),
-                                  ));
-                                },
-                                child: Text(
-                                  "LOGIN",
-                                  style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 18.0,
-                                      fontFamily: 'Poppins1',
-                                      fontWeight: FontWeight.bold),
-                                )),
-                          ),
-                          SizedBox(
-                            height: 15.0,
-                          ),
-                          // GestureDetector(
-                          //   onTap: (){
-                          //     Navigator.push(context, MaterialPageRoute(builder: (context)=>SignUp()));
-                          //   },
-                          //     child: Text("Dont have an account? SignUp",style: AppWidget.FeildStyle(),))
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text(
-                                "Dont have an account",
-                                style: AppWidget.FeildStyle(),
-                              ),
-                              TextButton(
-                                  onPressed: () {
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) => SignUp()));
-                                  },
+                      child: Form(
+                        key: _formkey,
+                        child: Column(
+                          children: [
+                            SizedBox(
+                              height: 30.0,
+                            ),
+                            Text(
+                              "LogIn",
+                              style: AppWidget.boldTextFeildStyle(),
+                            ),
+                            TextFormField(
+                              controller: useremailcontroller,
+                              validator: (value){
+                               if(value==null||value.isEmpty){
+                                 return 'Please enter email';
+                               }
+                               return null;
+                              },
+                              decoration: InputDecoration(
+                                  hintText: "Email",
+                                  hintStyle: AppWidget.BoldTextFeildStyle(),
+                                  prefixIcon: Icon(Icons.email_outlined)),
+                            ),
+                            SizedBox(
+                              height: 30.0,
+                            ),
+                            TextFormField(
+                              controller: userpasswordcontroller,
+                              validator: (value){
+                                if(value==null||value.isEmpty){
+                                  return 'Please enter password';
+                                }
+                                return null;
+                              },
+                              obscureText: true,
+                              decoration: InputDecoration(
+                                  hintText: "Password",
+                                  hintStyle: AppWidget.BoldTextFeildStyle(),
+                                  prefixIcon: Icon(Icons.password_outlined)),
+                            ),
+                            SizedBox(
+                              height: 10.0,
+                            ),
+                            GestureDetector(
+                              onTap: (){
+                               Navigator.push(context, MaterialPageRoute(builder: (context)=>forgetpassword()));
+                              },
+                              child: Container(
+                                  alignment: Alignment.topRight,
                                   child: Text(
-                                    "SignUp",
+                                    "Forget Password?",
                                     style: AppWidget.FeildStyle(),
-                                  ))
-                            ],
-                          )
-                        ],
+                                  ),
+                              ),
+                            ),
+                            SizedBox(
+                              height: 60.0,
+                            ),
+                            GestureDetector(
+                              onTap: (){
+                                if(_formkey.currentState!.validate()){
+                                  setState(() {
+                                    email=useremailcontroller.text;
+                                    password=userpasswordcontroller.text;
+                                  });
+                                }
+                                userLogin() ;
+                              },
+                              child: Material(
+                                elevation: 5.0,
+                                  borderRadius: BorderRadius.circular(20.0),
+                                child: Container(
+                                  padding: EdgeInsets.symmetric(vertical: 8.0),
+                                  width: 200,
+                                  decoration: BoxDecoration(color: Color(0xFFe74b1a),borderRadius: BorderRadius.circular(20.0)),
+                                  child: Center(
+                                      child: Text(
+                                        "LOGIN",
+                                        style: TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 18.0,
+                                            fontFamily: 'Poppins1',
+                                            fontWeight: FontWeight.bold),)),
+                                ),
+                              ),
+                            ),
+                            // Container(
+                            //   width: 200,
+                            //   height: 50,
+                            //   child: ElevatedButton(
+                            //       style: ButtonStyle(
+                            //         backgroundColor: MaterialStatePropertyAll(
+                            //           Colors.redAccent,
+                            //         ),
+                            //       ),
+                            //       onPressed: () {
+                            //         Navigator.of(context).push(MaterialPageRoute(
+                            //           builder: (context) => BottomNav(),
+                            //         ));
+                            //       },
+                            //       child: Text(
+                            //         "LOGIN",
+                            //         style: TextStyle(
+                            //             color: Colors.white,
+                            //             fontSize: 18.0,
+                            //             fontFamily: 'Poppins1',
+                            //             fontWeight: FontWeight.bold),
+                            //       )),
+                            // ),
+                            SizedBox(
+                              height: 15.0,
+                            ),
+                            // GestureDetector(
+                            //   onTap: (){
+                            //     Navigator.push(context, MaterialPageRoute(builder: (context)=>SignUp()));
+                            //   },
+                            //     child: Text("Dont have an account? SignUp",style: AppWidget.FeildStyle(),))
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(
+                                  "Dont have an account",
+                                  style: AppWidget.FeildStyle(),
+                                ),
+                                TextButton(
+                                    onPressed: () {
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) => SignUp()));
+                                    },
+                                    child: Text(
+                                      "SignUp",
+                                      style: AppWidget.FeildStyle(),
+                                    ))
+                              ],
+                            )
+                          ],
+                        ),
                       ),
                     ),
                   )

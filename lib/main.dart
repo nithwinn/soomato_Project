@@ -1,10 +1,25 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:soomato/pages.dart';
 import 'package:soomato/pages/bottomnav.dart';
 import 'package:soomato/pages/login.dart';
+import 'package:soomato/pages/onboard.dart';
+import 'package:soomato/pages/order.dart';
+import 'package:soomato/pages/profile.dart';
 import 'package:soomato/pages/signup.dart';
+import 'package:soomato/pages/wallet.dart';
 
-void main() {
+import 'admin/add_food.dart';
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+await Firebase.initializeApp(
+  options: FirebaseOptions(
+      apiKey: "AIzaSyCJ3wsFydjL5e-xh3HNgFIloCZK9jda7Jg",
+      appId: "1:532486167893:android:819ef36e84ba343156e3dc",
+      messagingSenderId: "532486167893",
+      projectId: "soomaatoo-20b64")
+);
   runApp(const MyApp());
 }
 
@@ -35,7 +50,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: const SignUp(),
+      home: const Onboard(),
       debugShowCheckedModeBanner: false,
     );
   }

@@ -82,9 +82,33 @@ class Home extends StatelessWidget {
                       scrollDirection: Axis.horizontal,
                       child: Row(
                         children: [
-                        Saladtile(imageurl: "assets/images/salad.jpeg", title: "Fruit salad", subtitle: "Fresh and healthy", price: 25, ontap: (){
-                           Navigator.of(context).push(MaterialPageRoute(builder: (context) => Details(),));
-                        },),
+                        // Saladtile(imageurl: "assets/images/salad.jpeg", title: "Fruit salad", subtitle: "Fresh and healthy", price: 25, ontap: (){
+                         //  Navigator.of(context).push(MaterialPageRoute(builder: (context) => Details(),));
+                        // },),
+                          SizedBox(width: 10,height: 10,),
+                          GestureDetector(
+                            onTap: (){
+                              Navigator.of(context).push(MaterialPageRoute(builder: (context) => Details(),));
+                            },
+                            child: Material(
+                              elevation: 5.0,
+                              borderRadius: BorderRadius.circular(20),
+                              child: Container(
+                                padding: EdgeInsets.all(14),
+                                child: Column(
+                                  crossAxisAlignment : CrossAxisAlignment.start,
+                                  children: [
+                                    Image.asset("assets/images/salad.jpeg",height: 150,width: 150,fit: BoxFit.cover,),
+                                    Text("Mix veg Salads",
+                                      style: AppWidget.boldTextFeildStyle(),),
+                                    Text("Fresh & Healthy",
+                                      style: AppWidget.LightTextFeildStyle(),),
+                                    SizedBox(height: 5.0,),
+                                    Text("\$25",style: AppWidget.BoldTextFeildStyle(),)
+                                  ],),
+                              ),
+                            ),
+                          ),
                           SizedBox(width: 10,height: 10,),
                           Material(
                             elevation: 5.0,
@@ -94,13 +118,13 @@ class Home extends StatelessWidget {
                               child: Column(
                                 crossAxisAlignment : CrossAxisAlignment.start,
                                 children: [
-                                  Image.asset("assets/images/salad.jpeg",height: 150,width: 150,fit: BoxFit.cover,),
-                                  Text("Mix veg Salads",
+                                  Image.asset("assets/images/food.jpeg",height: 150,width: 150,fit: BoxFit.cover,),
+                                  Text("Cheesy Pizza",
                                     style: AppWidget.boldTextFeildStyle(),),
-                                  Text("Fresh & Healthy",
+                                  Text("Cheesy & Spicy",
                                     style: AppWidget.LightTextFeildStyle(),),
                                   SizedBox(height: 5.0,),
-                                  Text("\$25",style: AppWidget.BoldTextFeildStyle(),)
+                                  Text("\$15",style: AppWidget.BoldTextFeildStyle(),)
                                 ],),
                             ),
                           ),
@@ -113,13 +137,49 @@ class Home extends StatelessWidget {
                               child: Column(
                                 crossAxisAlignment : CrossAxisAlignment.start,
                                 children: [
-                                  Image.asset("assets/images/salad.jpeg",height: 150,width: 150,fit: BoxFit.cover,),
-                                  Text("Veg Salads",
+                                  Image.asset("assets/images/Biriyani.jpeg",height: 150,width: 150,fit: BoxFit.cover,),
+                                  Text("Biriyani",
                                     style: AppWidget.boldTextFeildStyle(),),
-                                  Text("Fresh & Healthy",
+                                  Text("Hyderabad style",
                                     style: AppWidget.LightTextFeildStyle(),),
                                   SizedBox(height: 5.0,),
-                                  Text("\$25",style: AppWidget.BoldTextFeildStyle(),)
+                                  Text("\$20",style: AppWidget.BoldTextFeildStyle(),)
+                                ],),
+                            ),
+                          ),
+                          Material(
+                            elevation: 5.0,
+                            borderRadius: BorderRadius.circular(20),
+                            child: Container(
+                              padding: EdgeInsets.all(14),
+                              child: Column(
+                                crossAxisAlignment : CrossAxisAlignment.start,
+                                children: [
+                                  Image.asset("assets/images/Parotta.jpeg",height: 150,width: 150,fit: BoxFit.cover,),
+                                  Text("Parotta",
+                                    style: AppWidget.boldTextFeildStyle(),),
+                                  Text("Kerala Parotta",
+                                    style: AppWidget.LightTextFeildStyle(),),
+                                  SizedBox(height: 5.0,),
+                                  Text("\$10",style: AppWidget.BoldTextFeildStyle(),)
+                                ],),
+                            ),
+                          ),
+                          Material(
+                            elevation: 5.0,
+                            borderRadius: BorderRadius.circular(20),
+                            child: Container(
+                              padding: EdgeInsets.all(14),
+                              child: Column(
+                                crossAxisAlignment : CrossAxisAlignment.start,
+                                children: [
+                                  Image.asset("assets/images/Fried Chicken.jpeg",height: 150,width: 150,fit: BoxFit.cover,),
+                                  Text("Fried Chicken",
+                                    style: AppWidget.boldTextFeildStyle(),),
+                                  Text("Crispy ",
+                                    style: AppWidget.LightTextFeildStyle(),),
+                                  SizedBox(height: 5.0,),
+                                  Text("\$30",style: AppWidget.BoldTextFeildStyle(),)
                                 ],),
                             ),
                           ),
@@ -127,9 +187,50 @@ class Home extends StatelessWidget {
 
                       ),
                     ),
-                    SizedBox(
-                      height: 30.0,
+                    // SizedBox(
+                    //   height: 60.0,
+                    // ),
+                    Container(
+                      margin: EdgeInsets.only(right: 20.0),
+                      child: Material(
+                        elevation: 5.0,
+                        borderRadius: BorderRadius.circular(20),
+                        child: Container(
+                            padding: EdgeInsets.all(5.0),
+                            child:Row(
+                              crossAxisAlignment: CrossAxisAlignment.start ,
+                              children: [
+                                // Image.asset(
+                                //   "assets/images/salad.jpeg",
+                                //   height: 100,
+                                //   width: 100,
+                                //   fit: BoxFit.cover,
+                                // ),
+                                Container(
+                                  height:100,
+                                  width:100,
+                                  decoration: BoxDecoration(borderRadius: BorderRadius.circular(8),color: Colors.greenAccent,image: DecorationImage(image: AssetImage("assets/images/Beef Stew.jpeg",),fit: BoxFit.cover)),
+                                ),
+                                SizedBox(width: 10.0,),
+                                Column(
+                                  children: [
+                                    Container(
+                                        width: MediaQuery.of(context).size.width/2,
+                                        child: Text("Beef Stew",style: AppWidget.extFeildStyle() ,)),
+                                    SizedBox(height: 5.0,),
+                                    Container(
+                                        width: MediaQuery.of(context).size.width/2,
+                                        child: Text("Classic Beef Stew with all the fixings",style: AppWidget.LightTextFeildStyle() ,)),
+                                    SizedBox(height: 5.0,),
+                                    Container(
+                                        width: MediaQuery.of(context).size.width/2,
+                                        child: Text("\$28",style: AppWidget.BoldTextFeildStyle(),)),
+                                  ],)
+                              ],)
+                        ),
+                      ),
                     ),
+                    SizedBox(height: 5.0,),
                     Container(
                       margin: EdgeInsets.only(right: 20.0),
                       child: Material(
@@ -149,27 +250,28 @@ class Home extends StatelessWidget {
                                 Container(
                                   height:100,
                                   width:100,
-                                  decoration: BoxDecoration(borderRadius: BorderRadius.circular(8),color: Colors.greenAccent,image: DecorationImage(image: AssetImage("assets/images/salad.jpeg",),fit: BoxFit.cover)),
+                                  decoration: BoxDecoration(borderRadius: BorderRadius.circular(8),color: Colors.greenAccent,image: DecorationImage(image: AssetImage("assets/images/Butter Chicken.jpeg",),fit: BoxFit.cover)),
                                 ),
                                 SizedBox(width: 10.0,),
                                 Column(
                                   children: [
                                     Container(
                                         width: MediaQuery.of(context).size.width/2,
-                                        child: Text("Mediterrance Chickpea Salad with extra veggies",style: AppWidget.extFeildStyle() ,)),
+                                        child: Text("Butter Chicken",style: AppWidget.extFeildStyle() ,)),
                                     SizedBox(height: 5.0,),
                                     Container(
                                         width: MediaQuery.of(context).size.width/2,
-                                        child: Text("Honey goot cheese",style: AppWidget.LightTextFeildStyle() ,)),
+                                        child: Text("Creamy Butter Chicken",style: AppWidget.LightTextFeildStyle() ,)),
                                     SizedBox(height: 5.0,),
                                     Container(
                                         width: MediaQuery.of(context).size.width/2,
-                                        child: Text("\$28",style: AppWidget.BoldTextFeildStyle(),)),
+                                        child: Text("\$25",style: AppWidget.BoldTextFeildStyle(),)),
                                   ],)
                               ],)
                         ),
                       ),
                     ),
+                    SizedBox(height: 5.0,),
                     Container(
                       margin: EdgeInsets.only(right: 20.0),
                       child: Material(
@@ -181,7 +283,7 @@ class Home extends StatelessWidget {
                               crossAxisAlignment: CrossAxisAlignment.start ,
                               children: [
                                 Image.asset(
-                                  "assets/images/salad.jpeg",
+                                  "assets/images/Kothu parotta.jpeg",
                                   height: 100,
                                   width: 100,
                                   fit: BoxFit.cover,
@@ -191,11 +293,11 @@ class Home extends StatelessWidget {
                                   children: [
                                     Container(
                                         width: MediaQuery.of(context).size.width/2,
-                                        child: Text("Mediterrance Chickpea Salad with extra veggies",style: AppWidget.extFeildStyle() ,)),
+                                        child: Text("Kothu parotta",style: AppWidget.extFeildStyle() ,)),
                                     SizedBox(height: 5.0,),
                                     Container(
                                         width: MediaQuery.of(context).size.width/2,
-                                        child: Text("Honey goot cheese",style: AppWidget.LightTextFeildStyle() ,)),
+                                        child: Text("HSouth Indian streetfood",style: AppWidget.LightTextFeildStyle() ,)),
                                     SizedBox(height: 5.0,),
                                     Container(
                                         width: MediaQuery.of(context).size.width/2,
@@ -205,6 +307,7 @@ class Home extends StatelessWidget {
                         ),
                       ),
                     ),
+                    SizedBox(height: 5.0,),
                     Container(
                       margin: EdgeInsets.only(right: 20.0),
                       child: Material(

@@ -42,7 +42,7 @@ class _BottomNavState extends State<BottomNav> {
       onTap: (index){
         updateIndex(index);
       },
-        backgroundColor: Colors.transparent,
+        backgroundColor: Colors.black38,
       ),
     );
   }

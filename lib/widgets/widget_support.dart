@@ -56,4 +56,18 @@ class AppWidget {
         fontWeight: FontWeight.normal,
         fontFamily: 'Poppins');
   }
+  static TextStyle Style() {
+    return TextStyle(
+        color: Colors.black,
+        fontSize: 26.0,
+        fontWeight: FontWeight.bold,
+        fontFamily: 'Poppins');
+  }
+  static TextStyle BoldStyle() {
+    return TextStyle(
+        color: Colors.black,
+        fontSize: 20.0,
+        fontWeight: FontWeight.w500,
+        fontFamily: 'Poppins');
+  }
 }
