@@ -1,5 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:soomato/pages.dart';
 import 'package:soomato/pages/bottomnav.dart';
 import 'package:soomato/pages/login.dart';
@@ -8,11 +9,13 @@ import 'package:soomato/pages/order.dart';
 import 'package:soomato/pages/profile.dart';
 import 'package:soomato/pages/signup.dart';
 import 'package:soomato/pages/wallet.dart';
+import 'package:soomato/widgets/app_constant.dart';
 
 import 'admin/add_food.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  Stripe.publishableKey=publishableKey;
 await Firebase.initializeApp(
   options: FirebaseOptions(
       apiKey: "AIzaSyCJ3wsFydjL5e-xh3HNgFIloCZK9jda7Jg",

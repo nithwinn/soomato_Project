@@ -1,6 +1,12 @@
-import 'package:flutter/material.dart';
+import 'dart:convert';
 
+import 'package:flutter/material.dart';
+import 'package:flutter_stripe/flutter_stripe.dart';
+import 'package:soomato/widgets/app_constant.dart';
 import '../widgets/widget_support.dart';
+import 'package:http/http.dart' as http;
+
+
 
 class Wallet extends StatefulWidget {
   const Wallet({super.key});
@@ -10,6 +16,7 @@ class Wallet extends StatefulWidget {
 }
 
 class _WalletState extends State<Wallet> {
+  Map<String, dynamic>?paymentIntent;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -100,7 +107,7 @@ class _WalletState extends State<Wallet> {
               padding: EdgeInsets.symmetric(vertical: 12.0,),
               width: MediaQuery.of(context).size.width,
               decoration: BoxDecoration(
-                  color: Colors.green,borderRadius: BorderRadius.circular(8)
+                  color: Color(0xFF008080),borderRadius: BorderRadius.circular(8)
               ),
               child: Center(child: Text("Add money",style: TextStyle(color: Colors.white,fontSize: 20.0,fontFamily: "Poppins",fontWeight: FontWeight.bold),
               ),),
@@ -110,4 +117,72 @@ class _WalletState extends State<Wallet> {
       ),
     );
   }
+
+     Future<void>makePayment(String amount)async{
+    try{
+      paymentIntent=await createPaymentIntent(amount,'INR');
+      await Stripe.instance.initPaymentSheet(paymentSheetParameters: SetupPaymentSheetParameters(
+          paymentIntentClientSecret: paymentIntent!['client_secret'],
+          style: ThemeMode.dark,
+          merchantDisplayName: 'Adnan'
+      )).then((value){});
+
+    displayPaymentSheet(amount);
+    }catch(e,s){
+      print('exception: $e$s');
+       }
+    }
+    displayPaymentSheet(String amount)async{
+try {
+  await Stripe.instance.presentPaymentSheet().then((value) async {
+    showDialog(context: context, builder: (_) =>
+        AlertDialog(
+          content: Column(children: [
+            Row(children: [
+              Icon(Icons.check_circle, color: Colors.green,),
+              Text("Payment Sucessfull")
+            ],)
+          ],),
+        ));
+    paymentIntent = null;
+  }).onError((error, stackTrace) {
+    print('Error is :--->$error $stackTrace');
+  });
+}on StripeException catch(e){
+  print('Error is : --->$e');
+  showDialog(context: context, builder: (_)=> const AlertDialog(
+    content: Text("Cancelled"),
+  ));
+}catch(e){
+  print('$e');
 }
+    }
+    createPaymentIntent(String amount,String currency)async{
+    try{
+      Map<String,dynamic> body= {
+        'amount': calculateAmount(amount),
+        'currency':currency,
+        'payment_method_type[]':'card',
+      };
+
+      var response= await http.post(
+        Uri.parse('http://api.stripe.com/v1/payment_intents'),
+        headers: {
+          'Authorization':'Bearer $secretKey',
+          'Content-Type':'application/x-www-form-urlencoded'
+        },
+        body: body,
+      );
+      print('Payment Intent Body->>>${response.body.toString()}');
+      return jsonDecode(response.body);
+
+    }catch(err){
+      print('err charging user:${err.toString()}');
+    }
+    }
+    calculateAmount(String amount){
+    final calculateAmount=(int.parse(amount)*100);
+
+    return calculateAmount.toString();
+    }
+  }
