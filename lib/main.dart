@@ -1,17 +1,19 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
-import 'package:soomato/pages.dart';
-import 'package:soomato/pages/bottomnav.dart';
-import 'package:soomato/pages/login.dart';
+import 'package:soomato/admin/addmin_login.dart';
 import 'package:soomato/pages/onboard.dart';
-import 'package:soomato/pages/order.dart';
-import 'package:soomato/pages/profile.dart';
-import 'package:soomato/pages/signup.dart';
-import 'package:soomato/pages/wallet.dart';
+// import 'package:soomato/pages.dart';
+// import 'package:soomato/pages/bottomnav.dart';
+// import 'package:soomato/pages/login.dart';
+// import 'package:soomato/pages/onboard.dart';
+// import 'package:soomato/pages/order.dart';
+// import 'package:soomato/pages/profile.dart';
+// import 'package:soomato/pages/signup.dart';
+// import 'package:soomato/pages/wallet.dart';
 import 'package:soomato/widgets/app_constant.dart';
 
-import 'admin/add_food.dart';
+// import 'admin/add_food.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -53,7 +55,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: const Onboard(),
+      home: Onboard(),
       debugShowCheckedModeBanner: false,
     );
   }

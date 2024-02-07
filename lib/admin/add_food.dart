@@ -1,4 +1,9 @@
+import 'dart:io';
+
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:random_string/random_string.dart';
 
 import '../widgets/widget_support.dart';
 
@@ -16,6 +21,29 @@ class _AddfoodState extends State<Addfood> {
   TextEditingController namecontroller= new TextEditingController();
   TextEditingController pricecontroller= new TextEditingController();
   TextEditingController detailscontroller= new TextEditingController();
+
+  final ImagePicker _picker=ImagePicker();
+  File? selectedImage;
+
+  Future getImage()async{
+    var image= await  _picker.pickImage(source: ImageSource.gallery);
+
+    selectedImage= File(image!.path);
+    setState(() {
+
+    });
+  }
+
+  uploadItem()async{
+    if(selectedImage!=null&& namecontroller.text!=""&&pricecontroller.text!=""&& detailscontroller.text!=""){
+      String  addId= randomAlphaNumeric(10);
+
+      Reference firebaseStorageRef= FirebaseStorage.instance.ref().child("blogImages").child(addId);
+      final UploadTask task= firebaseStorageRef.putFile(selectedImage!);
+
+      var downloadUrl= await(await task).ref.getDownloadURL();
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -38,7 +66,26 @@ class _AddfoodState extends State<Addfood> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [Text("Upload the Item picture", style: AppWidget.semiBoldTextFeildStyle(),),
               SizedBox(height: 20.0,),
-              Center(
+              selectedImage==null? GestureDetector(
+                onTap: (){
+                  getImage();
+                },
+                child: Center(
+                  child: Material(
+                    elevation: 4.0,
+                    borderRadius: BorderRadius.circular(20.0),
+                    child: Container(
+                      width: 150,
+                      height: 150,
+                      decoration: BoxDecoration(
+                        border: Border.all(color: Colors.black,width: 1.5),
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      child: Icon(Icons.camera_alt_outlined,color: Colors.black,),
+                    ),
+                  ),
+                ),
+              ):Center(
                 child: Material(
                   elevation: 4.0,
                   borderRadius: BorderRadius.circular(20.0),
@@ -49,7 +96,11 @@ class _AddfoodState extends State<Addfood> {
                       border: Border.all(color: Colors.black,width: 1.5),
                       borderRadius: BorderRadius.circular(20),
                     ),
-                    child: Icon(Icons.camera_alt_outlined,color: Colors.black,),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(20),
+                      child: Image.file(selectedImage!,
+                        fit: BoxFit.cover,),
+                    ),
                   ),
                 ),
               ),
@@ -150,7 +201,7 @@ class _AddfoodState extends State<Addfood> {
                         .map((item) => DropdownMenuItem<String>(
                         value: item,
                         child: Text(
-                          "item",
+                          item,
                           style:
                           TextStyle(fontSize: 18.0,color: Colors.black),
                         )))

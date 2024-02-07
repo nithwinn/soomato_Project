@@ -1,6 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:random_string/random_string.dart';
 
+import '../service/database.dart';
+import '../service/shared_pref.dart';
 import '../widgets/widget_support.dart';
 import 'bottomnav.dart';
 import 'login.dart';
@@ -14,41 +17,56 @@ class SignUp extends StatefulWidget {
 
 class _SignUpState extends State<SignUp> {
 
-String email="",password="", name="";
+  String email="",password="", name="";
 
-TextEditingController namecontroller=new TextEditingController();
+  TextEditingController namecontroller=new TextEditingController();
 
-TextEditingController passwordcontroller=new TextEditingController();
+  TextEditingController passwordcontroller=new TextEditingController();
 
-TextEditingController mailcontroller=new TextEditingController();
+  TextEditingController mailcontroller=new TextEditingController();
 
-final _formkey=GlobalKey<FormState>();
+  final _formkey=GlobalKey<FormState>();
 
-registration()async{
-  if(password!=null){
-    try{
-      UserCredential userCredential=await FirebaseAuth.instance.createUserWithEmailAndPassword(email: email, password: password);
+  registration()async{
+    if(password!=null){
+      try{
+        UserCredential userCredential=await FirebaseAuth.instance.createUserWithEmailAndPassword(email: email, password: password);
 
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-          backgroundColor: Colors.orangeAccent,
-          content: Text("Registered Succesfully",
-            style: TextStyle(fontSize: 20.0),
-          )));
-      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>BottomNav()));
-    }on FirebaseException catch(e){
-      if(e.code=='weak password you bleady'){
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Password provided is too weak",style: TextStyle(fontSize:18.0 ),)));
-
-      }
-      else if(e.code=="email-already-in-use"){
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-          backgroundColor: Colors.redAccent,
-          content: Text("Account already exisits",
-            style: TextStyle(fontSize: 10.0),),));
+            backgroundColor: Colors.orangeAccent,
+            content: Text("Registered Succesfully",
+              style: TextStyle(fontSize: 20.0),
+            )));
+        String Id= randomAlphaNumeric(10);
+        Map<String, dynamic>addUserInfo={
+          "Name":namecontroller.text,
+          "Email":mailcontroller.text,
+          "Wallet":"0",
+          "Id": Id,
+        };
+        await DatabaseMethods().addUserDetails(addUserInfo, Id);
+        await SharedPreferenceHelper().saveUserName(namecontroller.text);
+        await SharedPreferenceHelper().saveUserEmail(mailcontroller.text);
+        await SharedPreferenceHelper().saveUserWallet("0");
+        await SharedPreferenceHelper().saveUserId(Id);
+
+        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>BottomNav()));
+      }on FirebaseException catch(e){
+        if(e.code=='weak password you bleady'){
+          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+              backgroundColor: Colors.orangeAccent,
+              content: Text("Password provided is too weak",style: TextStyle(fontSize:18.0 ),)));
+
+        }
+        else if(e.code=="email-already-in-use"){
+          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            backgroundColor: Colors.redAccent,
+            content: Text("Account already exisits",
+              style: TextStyle(fontSize: 10.0),),));
+        }
       }
     }
   }
-}
 
   @override
   Widget build(BuildContext context) {
@@ -127,7 +145,7 @@ registration()async{
                                 }
                                 return null;
                               },
-                              obscureText: true,
+                              obscureText: false,
                               decoration: InputDecoration(
                                   hintText: "Email",
                                   hintStyle: AppWidget.BoldTextFeildStyle(),
@@ -195,10 +213,10 @@ registration()async{
                                       borderRadius: BorderRadius.circular(20.0)),
                                   child: Center(
                                       child: Text("SIGN UP",
-                                      style: TextStyle(color: Colors.white,
-                                      fontSize: 18.0,
-                                      fontFamily: 'Poppins1',
-                                      fontWeight: FontWeight.bold),)),
+                                        style: TextStyle(color: Colors.white,
+                                            fontSize: 18.0,
+                                            fontFamily: 'Poppins1',
+                                            fontWeight: FontWeight.bold),)),
                                 ),
                               ),
                             ),
@@ -232,4 +250,3 @@ registration()async{
     );
   }
 }
-

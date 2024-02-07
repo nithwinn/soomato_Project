@@ -1,9 +1,9 @@
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
-import 'package:soomato/pages.dart';
-import 'package:soomato/pages/order.dart';
 import 'package:soomato/pages/profile.dart';
 import 'package:soomato/pages/wallet.dart';
+import '../pages.dart';
+import 'order.dart';
 
 class BottomNav extends StatefulWidget {
   const BottomNav({super.key});
@@ -18,8 +18,8 @@ class _BottomNavState extends State<BottomNav> {
   late List<Widget>pages=[const Home(),const Wallet(),const Order(),const Profile(),];
   void updateIndex(int newindex){
     setState(() {
-        currentTabIndex=newindex;
-      });}
+      currentTabIndex=newindex;
+    });}
   // late Widget currentPage;
   // late Home homepage;
   // late Profile profile;
@@ -39,9 +39,9 @@ class _BottomNavState extends State<BottomNav> {
         height:65,
         animationDuration: Duration(milliseconds: 500),
         items: [Icon(Icons.home),Icon(Icons.wallet),Icon(Icons.shopping_bag),Icon(Icons.person)],
-      onTap: (index){
-        updateIndex(index);
-      },
+        onTap: (index){
+          updateIndex(index);
+        },
         backgroundColor: Colors.black38,
       ),
     );
